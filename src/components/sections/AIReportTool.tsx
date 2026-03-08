@@ -10,6 +10,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { generatePreliminaryEnergyOpportunityReport, type PreliminaryEnergyOpportunityReportOutput } from "@/ai/flows/preliminary-energy-opportunity-report";
 import { Loader2, Sparkles, CheckCircle2, ChevronRight, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import Link from "next/link";
 
 export function AIReportTool() {
   const [loading, setLoading] = useState(false);
@@ -37,6 +38,10 @@ export function AIReportTool() {
     try {
       const result = await generatePreliminaryEnergyOpportunityReport(formData);
       setReport(result);
+      toast({
+        title: "Success",
+        description: "Your report has been generated.",
+      });
     } catch (error) {
       toast({
         title: "Error",
@@ -48,11 +53,20 @@ export function AIReportTool() {
     }
   }
 
+  const handleDownload = () => {
+    // Basic implementation using window.print() which allows users to "Save as PDF"
+    window.print();
+    toast({
+      title: "Printing Report",
+      description: "Select 'Save as PDF' in the print dialog to download your report.",
+    });
+  };
+
   return (
-    <section id="ai-report" className="py-24 bg-background">
+    <section id="ai-report" className="py-24 bg-background print:p-0">
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-          <div className="space-y-6">
+          <div className="space-y-6 print:hidden">
             <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-semibold bg-primary/5 text-primary border-primary/10">
               <Sparkles className="h-4 w-4" /> AI-Powered Analysis
             </div>
@@ -107,9 +121,9 @@ export function AIReportTool() {
             </form>
           </div>
 
-          <div className="relative">
+          <div className="relative print:col-span-2">
             {!report && !loading && (
-              <div className="border-2 border-dashed rounded-2xl p-12 text-center flex flex-col items-center justify-center min-h-[400px] bg-secondary/10">
+              <div className="border-2 border-dashed rounded-2xl p-12 text-center flex flex-col items-center justify-center min-h-[400px] bg-secondary/10 print:hidden">
                 <div className="w-16 h-16 rounded-full bg-secondary flex items-center justify-center mb-6">
                   <Sparkles className="h-8 w-8 text-primary/40" />
                 </div>
@@ -119,7 +133,7 @@ export function AIReportTool() {
             )}
 
             {loading && (
-              <div className="border rounded-2xl p-12 text-center flex flex-col items-center justify-center min-h-[400px] bg-white animate-pulse">
+              <div className="border rounded-2xl p-12 text-center flex flex-col items-center justify-center min-h-[400px] bg-white animate-pulse print:hidden">
                 <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
                 <h3 className="text-xl font-headline font-bold mb-2">Analyzing Building Data</h3>
                 <p className="text-muted-foreground">Applying Nigerian energy efficiency standards...</p>
@@ -127,48 +141,59 @@ export function AIReportTool() {
             )}
 
             {report && !loading && (
-              <Card className="border-2 shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-500">
+              <Card id="printable-report" className="border-2 shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-500 print:shadow-none print:border-none">
                 <CardHeader className="bg-primary text-white pb-8">
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex justify-between items-start mb-4 print:hidden">
                     <Sparkles className="h-6 w-6 text-accent" />
                     <span className="text-xs uppercase tracking-widest font-bold opacity-70">Confidential Report</span>
                   </div>
                   <CardTitle className="text-2xl font-headline">{report.reportTitle}</CardTitle>
+                  <CardDescription className="text-primary-foreground/70 print:text-black/70">
+                    Prepared for {formData.businessName || 'Valued Client'}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="pt-8 space-y-8">
-                  <div className="grid grid-cols-2 gap-6 bg-secondary/20 p-6 rounded-xl">
-                    <div className="text-center border-r border-primary/10">
-                      <div className="text-3xl font-bold text-primary">{report.potentialSavingsPercentage}%</div>
+                  <div className="grid grid-cols-2 gap-6 bg-secondary/20 p-6 rounded-xl print:bg-gray-100">
+                    <div className="text-center border-r border-primary/10 print:border-black/10">
+                      <div className="text-3xl font-bold text-primary print:text-black">{report.potentialSavingsPercentage}%</div>
                       <p className="text-xs text-muted-foreground uppercase font-bold tracking-tighter">Savings Potential</p>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">₦ {report.potentialSavingsNairaMonthly.toLocaleString()}</div>
+                      <div className="text-2xl font-bold text-primary print:text-black">₦ {report.potentialSavingsNairaMonthly.toLocaleString()}</div>
                       <p className="text-xs text-muted-foreground uppercase font-bold tracking-tighter">Monthly Cost Redux</p>
                     </div>
                   </div>
 
                   <div className="space-y-4">
-                    <h4 className="font-bold flex items-center gap-2"><CheckCircle2 className="h-5 w-5 text-primary" /> Strategic Summary</h4>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{report.summary}</p>
+                    <h4 className="font-bold flex items-center gap-2"><CheckCircle2 className="h-5 w-5 text-primary print:text-black" /> Strategic Summary</h4>
+                    <p className="text-sm leading-relaxed text-muted-foreground print:text-black">{report.summary}</p>
                   </div>
 
                   <div className="space-y-4">
-                    <h4 className="font-bold flex items-center gap-2"><ChevronRight className="h-5 w-5 text-primary" /> Recommended Services</h4>
+                    <h4 className="font-bold flex items-center gap-2"><ChevronRight className="h-5 w-5 text-primary print:text-black" /> Recommended Services</h4>
                     <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {report.recommendedServices.map((service, i) => (
-                        <li key={i} className="text-sm bg-muted p-2 rounded border-l-4 border-primary">{service}</li>
+                        <li key={i} className="text-sm bg-muted p-2 rounded border-l-4 border-primary print:bg-gray-50 print:border-black">{service}</li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg">
-                    <h4 className="font-bold text-primary text-sm mb-1 uppercase tracking-wider">Immediate Next Step</h4>
-                    <p className="text-sm font-medium">{report.nextSteps}</p>
+                  <div className="p-4 bg-accent/10 border border-accent/20 rounded-lg print:bg-gray-100 print:border-black/10">
+                    <h4 className="font-bold text-primary text-sm mb-1 uppercase tracking-wider print:text-black">Immediate Next Step</h4>
+                    <p className="text-sm font-medium print:text-black">{report.nextSteps}</p>
+                  </div>
+                  
+                  <div className="hidden print:block text-[10px] text-muted-foreground pt-12">
+                    © {new Date().getFullYear()} GoGreen Energy Advisory. This is a preliminary automated analysis.
                   </div>
                 </CardContent>
-                <CardFooter className="flex flex-col sm:flex-row gap-3 border-t bg-muted/50 p-6">
-                  <Button className="flex-1">Schedule Consultation</Button>
-                  <Button variant="outline" className="flex-1"><Download className="mr-2 h-4 w-4" /> Download PDF</Button>
+                <CardFooter className="flex flex-col sm:flex-row gap-3 border-t bg-muted/50 p-6 print:hidden">
+                  <Button asChild className="flex-1">
+                    <Link href="/contact">Schedule Consultation</Link>
+                  </Button>
+                  <Button variant="outline" onClick={handleDownload} className="flex-1">
+                    <Download className="mr-2 h-4 w-4" /> Download PDF
+                  </Button>
                 </CardFooter>
               </Card>
             )}

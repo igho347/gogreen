@@ -1,4 +1,6 @@
 
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,8 +8,21 @@ import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Mail, Phone, MapPin, MessageCircle, Clock } from "lucide-react";
 import Link from "next/link";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ContactPage() {
+  const { toast } = useToast();
+  const whatsappNumber = "2348037968737";
+  const emailAddress = "i.knack@yahoo.com";
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Request Sent",
+      description: "Thank you for reaching out. We will contact you shortly.",
+    });
+  };
+
   return (
     <div className="flex flex-col">
       <section className="bg-white py-20 border-b">
@@ -31,21 +46,21 @@ export default function ContactPage() {
                   <CardDescription>We'll respond within 24 business hours with a preliminary assessment.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form className="space-y-6">
+                  <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="name">Full Name</Label>
-                        <Input id="name" placeholder="John Doe" />
+                        <Input id="name" placeholder="John Doe" required />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="email">Work Email</Label>
-                        <Input id="email" type="email" placeholder="john@company.com" />
+                        <Input id="email" type="email" placeholder="john@company.com" required />
                       </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label htmlFor="phone">Phone Number</Label>
-                        <Input id="phone" placeholder="+234..." />
+                        <Input id="phone" placeholder="+234..." required />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="business">Business Name</Label>
@@ -72,7 +87,9 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-bold">Email Us</p>
-                      <p className="text-muted-foreground">contact@gogreenadvisory.ng</p>
+                      <Link href={`mailto:${emailAddress}`} className="text-muted-foreground hover:text-primary transition-colors">
+                        {emailAddress}
+                      </Link>
                     </div>
                   </div>
                   <div className="flex gap-4">
@@ -81,8 +98,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="font-bold">WhatsApp</p>
-                      <p className="text-muted-foreground">+234 800 000 0000</p>
-                      <Link href="https://wa.me/2340000000000" className="text-primary text-sm font-bold hover:underline">Chat with an Expert →</Link>
+                      <p className="text-muted-foreground">+234 803 796 8737</p>
+                      <Link href={`https://wa.me/${whatsappNumber}`} className="text-primary text-sm font-bold hover:underline">Chat with an Expert →</Link>
                     </div>
                   </div>
                   <div className="flex gap-4">

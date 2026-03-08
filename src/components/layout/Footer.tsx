@@ -3,6 +3,9 @@ import Link from "next/link";
 import { Leaf, Mail, MapPin, Phone } from "lucide-react";
 
 export function Footer() {
+  const whatsappNumber = "2348037968737";
+  const emailAddress = "i.knack@yahoo.com";
+
   return (
     <footer className="bg-secondary/30 border-t py-12 md:py-16">
       <div className="container mx-auto px-4 md:px-6">
@@ -47,11 +50,15 @@ export function Footer() {
             </div>
             <div className="flex items-center gap-3 text-sm">
               <Phone className="h-5 w-5 text-primary shrink-0" />
-              <span>+234 WhatsApp Enabled</span>
+              <Link href={`https://wa.me/${whatsappNumber}`} className="hover:text-primary transition-colors">
+                +234 803 796 8737
+              </Link>
             </div>
             <div className="flex items-center gap-3 text-sm">
               <Mail className="h-5 w-5 text-primary shrink-0" />
-              <span>contact@gogreenadvisory.ng</span>
+              <Link href={`mailto:${emailAddress}`} className="hover:text-primary transition-colors">
+                {emailAddress}
+              </Link>
             </div>
           </div>
         </div>

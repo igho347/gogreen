@@ -20,6 +20,8 @@ export default function Home() {
     { name: "Office Complexes", icon: Building2 },
   ];
 
+  const whatsappNumber = "2348037968737";
+
   return (
     <div className="flex flex-col">
       <Hero />
@@ -108,7 +110,7 @@ export default function Home() {
                 <Link href="/contact">Request Free Consultation</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="h-14 px-10 text-lg border-white text-white hover:bg-white/10">
-                <Link href="https://wa.me/2340000000000">WhatsApp Us</Link>
+                <Link href={`https://wa.me/${whatsappNumber}`} target="_blank">WhatsApp Us</Link>
               </Button>
             </div>
           </div>
