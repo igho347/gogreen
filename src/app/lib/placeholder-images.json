@@ -1,0 +1,41 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "hero-energy",
+      "description": "Commercial building with solar panels",
+      "imageUrl": "https://picsum.photos/seed/energy1/1200/800",
+      "imageHint": "solar panels commercial"
+    },
+    {
+      "id": "energy-audit",
+      "description": "Engineer performing an energy audit",
+      "imageUrl": "https://picsum.photos/seed/audit/800/600",
+      "imageHint": "energy audit"
+    },
+    {
+      "id": "building-analytics",
+      "description": "Digital dashboard for building energy analytics",
+      "imageUrl": "https://picsum.photos/seed/analytics/800/600",
+      "imageHint": "energy analytics"
+    },
+    {
+      "id": "hvac-optimization",
+      "description": "Industrial HVAC system on a rooftop",
+      "imageUrl": "https://picsum.photos/seed/hvac/800/600",
+      "imageHint": "industrial hvac"
+    },
+    {
+      "id": "hotel-case-study",
+      "description": "Modern hotel building in Lagos",
+      "imageUrl": "https://picsum.photos/seed/hotel/600/400",
+      "imageHint": "modern hotel"
+    },
+    {
+      "id": "factory-case-study",
+      "description": "Large industrial factory exterior",
+      "imageUrl": "https://picsum.photos/seed/factory/600/400",
+      "imageHint": "industrial factory"
+    }
+  ]
+}
